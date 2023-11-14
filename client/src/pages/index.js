@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 export default function Home() {
 
   const rootURL = process.env.NEXT_PUBLIC_API_URL
+  const [signupEmail, setSignupemail] = useState('')
+  const [signupPassword, setSignupPassword] = useState('')
 
   const handleLoginSubmit = async (e) =>{
     e.preventDefault()
@@ -33,7 +35,7 @@ export default function Home() {
         </form>
         <h1>Sign up</h1>
         <form className='flex flex-col w-48'>
-          <input type='text' placeholder='username' className='m-4'></input>
+          <input type='text' placeholder='email' className='m-4'onChange={(e)=>setSignupemail(e.target.value)}></input>
           <input type='password' placeholder='password' className='m-4'></input>
           <button className='bg-green-500' onClick={handleSignupSubmit}>Submit</button>
         </form>

@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 @api_view(['GET', 'POST'])
 def drink_list(request):
@@ -59,3 +60,6 @@ def create_user(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+@login_required
+def check_login(request):
+    return JsonResponse({'isLoggedIn': True})
