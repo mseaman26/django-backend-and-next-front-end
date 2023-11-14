@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/drinks/', views.drink_list),
     path('api/drinks/<int:id>', views.drink_detail),
     path("accounts/", include("django.contrib.auth.urls")),
+    path('api/signup/', views.create_user ),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
 ]

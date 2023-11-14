@@ -5,3 +5,6 @@ class DrinkSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Drink
         fields = ['id', 'name', 'description']
+class UserSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(min_length=8)

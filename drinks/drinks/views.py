@@ -1,9 +1,12 @@
 from django.http import JsonResponse
 from .models import Drink
 from .serializers import DrinkSerializer
+from .serializers import UserSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 @api_view(['GET', 'POST'])
 def drink_list(request):
@@ -37,4 +40,22 @@ def drink_detail(request, id):
     elif request.method == 'DELETE':
         drink.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+@api_view(['GET', 'POST'])
+def create_user(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data.get('email')
+            password = serializer.validated_data.get('password')
+            if email and password:
+                new_user = User.objects.create_user(username=email, email=email, password=password)
+                user = authenticate(username = email, password = password)
+                if user is not None:
+                    login(request, user)
+                    return Response({'message':'User Created Successfully'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'message': 'Email and Password are Required'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
