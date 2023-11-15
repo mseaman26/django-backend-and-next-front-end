@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 @api_view(['GET', 'POST'])
@@ -63,3 +64,6 @@ def create_user(request):
 @login_required
 def check_login(request):
     return JsonResponse({'isLoggedIn': True})
+def logout_view(request):
+    logout(request)
+    return JsonResponse({'message': 'Logged out successfully'})
